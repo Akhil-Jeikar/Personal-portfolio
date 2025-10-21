@@ -1,0 +1,291 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Clean Professional Color Palette */
+    --background: 222 47% 11%;
+    --foreground: 210 40% 98%;
+
+    --card: 217 33% 17%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 217 33% 17%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 217 91% 60%;
+    --primary-foreground: 222 47% 11%;
+
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 215 20% 30%;
+    --muted-foreground: 217 10% 65%;
+
+    --accent: 217 91% 60%;
+    --accent-foreground: 222 47% 11%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 215 20% 25%;
+    --input: 215 20% 20%;
+    --ring: 217 91% 60%;
+
+    --radius: 0.5rem;
+
+    /* Custom Design Tokens */
+    --accent-blue: 217 91% 60%;
+    --accent-slate: 215 20% 65%;
+    
+    /* Gradients */
+    --gradient-subtle: linear-gradient(135deg, hsl(217 91% 60% / 0.05), hsl(215 20% 30% / 0.05));
+    --gradient-card: linear-gradient(145deg, hsl(217 33% 17% / 0.6), hsl(217 33% 17% / 0.8));
+    
+    /* Shadows */
+    --shadow-sm: 0 2px 8px hsl(222 47% 11% / 0.3);
+    --shadow-md: 0 4px 16px hsl(222 47% 11% / 0.4);
+    --shadow-lg: 0 8px 24px hsl(222 47% 11% / 0.5);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "liga" 1, "calt" 1;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: hsl(var(--background));
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: hsl(var(--primary) / 0.3);
+    border-radius: 5px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: hsl(var(--primary) / 0.5);
+  }
+}
+
+@layer utilities {
+  .glass {
+    background: hsl(var(--card) / 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid hsl(var(--border) / 0.5);
+  }
+
+  .card-hover {
+    transition: var(--transition-smooth);
+  }
+
+  .card-hover:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: hsl(var(--primary) / 0.3);
+  }
+
+  /* Interactive Particle System */
+  .particle-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .particle {
+    position: absolute;
+    width: 3px;
+    height: 3px;
+    background: hsl(var(--primary) / 0.6);
+    border-radius: 50%;
+    animation: particleFloat var(--duration) ease-in-out infinite;
+    animation-delay: var(--delay);
+  }
+
+  @keyframes particleFloat {
+    0%, 100% {
+      transform: translate(0, 0) scale(1);
+      opacity: 0;
+    }
+    10% {
+      opacity: 1;
+    }
+    90% {
+      opacity: 1;
+    }
+    100% {
+      transform: translate(var(--tx), var(--ty)) scale(0.5);
+      opacity: 0;
+    }
+  }
+
+  /* Diagonal Section Styles */
+  .diagonal-section {
+    position: relative;
+    padding: 6rem 0;
+    transform: skewY(-3deg);
+  }
+
+  .diagonal-section > * {
+    transform: skewY(3deg);
+  }
+
+  /* Floating Card with Depth */
+  .floating-card {
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .floating-card::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.3), hsl(var(--accent) / 0.2));
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: -1;
+    filter: blur(20px);
+  }
+
+  .floating-card:hover {
+    transform: translateY(-12px) scale(1.02);
+  }
+
+  .floating-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Bento Grid Layout */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 1.5rem;
+    grid-auto-rows: minmax(120px, auto);
+  }
+
+  /* Reveal Animation */
+  .reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* Orbit Animation for Navigation */
+  @keyframes orbit {
+    0% {
+      transform: rotate(0deg) translateX(100px) rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg) translateX(100px) rotate(-360deg);
+    }
+  }
+
+  /* Magnetic Effect */
+  .magnetic {
+    transition: transform 0.2s ease-out;
+  }
+
+  /* Smooth Gradient Animation */
+  .gradient-shift {
+    background: linear-gradient(
+      135deg,
+      hsl(var(--primary) / 0.1),
+      hsl(var(--accent) / 0.05),
+      hsl(var(--primary) / 0.15)
+    );
+    background-size: 200% 200%;
+    animation: gradientShift 8s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0%, 100% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+  }
+
+  /* 3D Perspective Cards */
+  .perspective-card {
+    transform-style: preserve-3d;
+    transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+
+  .perspective-card:hover {
+    transform: rotateX(5deg) rotateY(-5deg);
+  }
+
+  /* Mesh Gradient Background */
+  .mesh-gradient {
+    background: 
+      radial-gradient(at 0% 0%, hsl(var(--primary) / 0.15) 0px, transparent 50%),
+      radial-gradient(at 100% 0%, hsl(var(--accent) / 0.1) 0px, transparent 50%),
+      radial-gradient(at 100% 100%, hsl(var(--primary) / 0.12) 0px, transparent 50%),
+      radial-gradient(at 0% 100%, hsl(var(--accent) / 0.08) 0px, transparent 50%);
+    animation: meshMove 20s ease infinite;
+  }
+
+  @keyframes meshMove {
+    0%, 100% {
+      background-position: 0% 0%, 100% 0%, 100% 100%, 0% 100%;
+    }
+    25% {
+      background-position: 10% 10%, 90% 10%, 90% 90%, 10% 90%;
+    }
+    50% {
+      background-position: 20% 5%, 80% 20%, 80% 80%, 5% 80%;
+    }
+    75% {
+      background-position: 5% 15%, 95% 5%, 95% 95%, 15% 95%;
+    }
+  }
+
+  /* Glow Effect */
+  .glow {
+    position: relative;
+  }
+
+  .glow::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 2px;
+    background: linear-gradient(135deg, hsl(var(--primary)), hsl(var(--accent)));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  .glow:hover::after {
+    opacity: 0.6;
+  }
+}

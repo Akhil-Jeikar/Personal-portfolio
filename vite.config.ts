@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
-  base: "/personal-Portfolio/", // 👈 match package.json homepage path so built assets use the correct base
+  base: "/", // serving from site root on Vercel
   server: {
     host: "::",
     port: 8080,
